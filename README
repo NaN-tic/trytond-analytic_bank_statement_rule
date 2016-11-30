@@ -1,0 +1,20 @@
+nantic_analytic_bank_statement_rule
+===========================================
+
+The analytic_bank_statement_rule module of the Tryton application platform.
+
+Installing
+----------
+
+See INSTALL
+
+
+License
+-------
+
+See LICENSE
+
+Copyright
+---------
+
+See COPYRIGHT
