@@ -32,7 +32,7 @@ class StatementLine(metaclass=PoolMeta):
     __name__ = 'account.bank.statement.line'
 
     def get_move_line_from_rline(self, rline, amount):
-        Selection = Pool().get('analytic_account.account.selection')
+        Selection = Pool().get('analytic_account.entry')
 
         mline = super(StatementLine, self).get_move_line_from_rline(rline,
             amount)
@@ -41,7 +41,8 @@ class StatementLine(metaclass=PoolMeta):
         for aa in rline.analytic_accounts:
             analytic_accounts.append(aa.analytic_account)
         if analytic_accounts:
-            selection = Selection(accounts=analytic_accounts)
-            mline.analytic_accounts = selection
+            new_entries = AnalyticAccountEntry.copy(analytic_accounts,
+                default={'origin': None,})
+            mline.analytic_accounts = new_entries
 
         return mline
