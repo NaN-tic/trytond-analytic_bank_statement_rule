@@ -20,6 +20,7 @@ class StatementLineRuleLineAnalytic(ModelSQL, ModelView):
             Eval('context', {}).get('company', -1)),
         ])
 
+
 class StatementLineRuleLine(metaclass=PoolMeta):
     __name__ = 'account.bank.statement.line.rule.line'
     analytic_accounts = fields.One2Many(
@@ -32,7 +33,7 @@ class StatementLine(metaclass=PoolMeta):
     __name__ = 'account.bank.statement.line'
 
     def get_move_line_from_rline(self, rline, amount):
-        Entry = Pool().get('analytic_account.entry')
+        Entry = Pool().get('analytic.account.entry')
 
         mline = super(StatementLine, self).get_move_line_from_rline(rline,
             amount)
