@@ -32,7 +32,8 @@ class StatementLine(metaclass=PoolMeta):
     __name__ = 'account.bank.statement.line'
 
     def get_move_line_from_rline(self, rline, amount):
-
+        pool = Pool()
+        AnalyticAccountEntry = pool.get('analytic.account.entry')
         mline = super(StatementLine, self).get_move_line_from_rline(rline,
             amount)
 
