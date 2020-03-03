@@ -20,7 +20,6 @@ class StatementLineRuleLineAnalytic(ModelSQL, ModelView):
             Eval('context', {}).get('company', -1)),
         ])
 
-
 class StatementLineRuleLine(metaclass=PoolMeta):
     __name__ = 'account.bank.statement.line.rule.line'
     analytic_accounts = fields.One2Many(
@@ -29,22 +28,15 @@ class StatementLineRuleLine(metaclass=PoolMeta):
 
 
 class StatementLine(metaclass=PoolMeta):
-
     __name__ = 'account.bank.statement.line'
 
     def get_move_line_from_rline(self, rline, amount):
-        Entry = Pool().get('analytic.account.entry')
-
+        pool = Pool()
+        AnalyticAccountEntry = pool.get('analytic.account.entry')
         mline = super(StatementLine, self).get_move_line_from_rline(rline,
             amount)
-
-        analytic_accounts = []
-        for aa in rline.analytic_accounts:
-            analytic_accounts.append(aa.analytic_account)
-        if analytic_accounts:
-            new_entries = Entry.copy(analytic_accounts, default={
-                    'origin': None,
-                    })
-            mline.analytic_accounts = new_entries
+        analytic_accounts = [AnalyticAccountEntry(root=x.analytic_account.root,
+                account=x.analytic_account) for x in rline.analytic_accounts]
+        mline.analytic_accounts = analytic_accounts
 
         return mline
